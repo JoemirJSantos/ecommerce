@@ -13,7 +13,7 @@ class Page{
 	];
 
 	//metodo construtor
-	public  function __construct($opts = array()){
+	public  function __construct($opts = array(), $tpl_dir = "/views/"){
 
 		//se não passar parametro no $opts ele pegar o $defaults, havendo conflito
 		//ele pega o valor passado em $opts (sobrescreve)
@@ -21,7 +21,7 @@ class Page{
 		
 		// config
 		$config = array(
-			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/",
+			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
 			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 			"debug"         => false // set to false to improve the speed
 		 );

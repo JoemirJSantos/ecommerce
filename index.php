@@ -5,6 +5,7 @@ require_once("vendor/autoload.php");
 // namespaces
 use \Slim\Slim;
 use Hcode\Page;
+use Hcode\PageAdmin;
 
 $app = new Slim();
 
@@ -21,6 +22,14 @@ $app->get('/', function() {
 	// $sql = new Sql();
 	// $resuts = $sql->select("SELECT * FROM tb_users");	
 	// echo json_encode($resuts);
+
+});
+
+$app->get('/admin', function() {
+    
+	$page = new PageAdmin(); // vai chamar o construtct
+
+	$page->setTpl("index"); // apos esta linha vai chamar o destruct da classe Page
 
 });
 
