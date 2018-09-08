@@ -4,12 +4,13 @@ namespace Hcode\Model;
 
 use \Hcode\DB\Sql;
 use \Hcode\Model;
+use \Hcode\Mailer;
 
 class User extends Model{
 
 	const SESSION = "User";
-	// chave para criptografia precisa ter mais de 15 caracteres
-	const SECRET = "ColoquAquiSuaChave_JJS_CursoPhp7_Secret" 
+	// chave para criptografia precisa ter 16, 24 ou 32 caracteres
+	const SECRET = "Php_7_key_Secret" ;
 
 	public static function login($login, $password){
 
@@ -150,7 +151,7 @@ class User extends Model{
 		else
 		{
 
-			$data = $results[0]
+			$data = $results[0];
 
 			$results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(
 				":iduser"=>$data["iduser"],
@@ -169,6 +170,18 @@ class User extends Model{
 				$code = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, User::SECRET, $dataRecovery["idrecovery"], MCRYPT_MODE_ECB));
 
 				$link = "http://www.meuwebsite.com.br/admin/forgot/reset?code=$code";
+
+
+				$mailer = new Mailer($data["desemail"], $data["desperson"], "Redefinir Senha do Usuário do Projeto", "forgot",
+					array(
+						"name"=>$data["desperson"],
+						"link"=>$link
+					));
+
+			
+				$mailer->send();
+
+				return $data;
 
 
 			}
@@ -197,22 +210,22 @@ class User extends Model{
 			    AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();
 			", array(
 				":idrecovery"=>$idrecovery	
-			))
+			));
 
 		if(count($results) === 0)
 		{
-			throw new \Exception("Não foi possível recuperar a senha.", 1);
+			throw new \Exception("Não foi possível recuperar a senha.");
 		}
 		else
 		{
-			return $results[0]
+			return $results[0];
 		}
 
 	}
 
 	public static function setForgotUsed($idrecovery)
 	{
-		sql = new Sql();
+		$sql = new Sql();
 
 		$sql->query("UPDATE tb_userspasswordsrecoveries SET dtrecovery = NOW() WHERE idrecovery = :idrecovery", array(
 			":idrecovery"=>$idrecovery
@@ -224,7 +237,7 @@ class User extends Model{
 
 		$sql = new Sql();
 
-		$sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser" array(
+		$sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
 			":password"=>$password,
 			":iduser"=>$this->getiduser()
 		));
