@@ -2,6 +2,7 @@
 
 use \Hcode\Page;
 use \Hcode\Model\Product;
+use \Hcode\Model\Category;
 
 $app->get('/', function() {
 
@@ -19,5 +20,22 @@ $app->get('/', function() {
 	// echo json_encode($resuts);
 
 });
+
+
+$app->get("/categories/:idcategory", function($idcategory){
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+
+	$page = new Page();
+
+	$page->setTpl("category", [
+		'category'=>$category->getValues(), 
+		'products'=>Product::checklist($category->getProducts())
+
+	]);
+});
+
 
 ?>
