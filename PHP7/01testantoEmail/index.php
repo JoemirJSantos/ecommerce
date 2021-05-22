@@ -35,10 +35,10 @@ $mail->SMTPSecure = 'tls';
 $mail->SMTPAuth = true;
 
 //Username to use for SMTP authentication - use full email address for gmail
-$mail->Username = "joemir.linx@gmail.com";
+$mail->Username = "meu_email@gmail.com";
 
 //Password to use for SMTP authentication
-$mail->Password = "joemir@linx";
+$mail->Password = "senha@doemail";
 
 //Set who the message is to be sent from
 $mail->setFrom('joemir.linx@gmail.com', 'Projeto 1 - Danielo/Joemir');
